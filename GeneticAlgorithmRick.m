@@ -10,14 +10,29 @@ while generation<options.Generations
         x_sort{generation}, fval_sort{generation}, feasible_sort{generation}] = ...
         GeneticAlgorithmRickFunc(fun,A,b,Aeq,beq,lb,ub,nonlcon,options,generation);
 
-    if mod(generation,10)==1
-        clf
-        figure(1)
-        plot(x_sort{generation}(:,1),x_sort{generation}(:,2),'k.'); hold on
-        plot(mutantKids{generation}(:,1),mutantKids{generation}(:,2),'b*');
-        axis([lb(1),ub(1),lb(2),ub(2)]);
-        pause(1);
+%     if mod(generation,10)==1
+%         clf
+%         figure(1)
+%         plot(x_sort{generation}(:,1),x_sort{generation}(:,2),'k.'); hold on
+%         plot(mutantKids{generation}(:,1),mutantKids{generation}(:,2),'b*');
+%         axis([lb(1),ub(1),lb(2),ub(2)]);
+%         pause(1);
+%     end
+    if isempty(fvalKids{generation}(find(feasibleKids{generation})==1))
+        mean_fval = NaN;
+        min_fval = NaN;
+    else
+        fvalKids{generation}(find(feasibleKids{generation})==1)
+        mean_fval = mean(fvalKids{generation}(find(feasibleKids{generation})==1));
+        min_fval = min(fvalKids{generation}(find(feasibleKids{generation})==1));
     end
+    figure(1)
+    plot(generation,mean_fval,'k.','MarkerSize',10); hold on
+    plot(generation,min_fval,'b*'); hold on
+    xlabel('Generations'); ylabel('Objective Function')
+    legend('Average','Best');
+    xlim([0,options.Generations]);
+        
     generation = generation+1;
 
 end
@@ -40,7 +55,7 @@ function [mutantKids, fvalKids, feasibleKids, x_sort, fval_sort, feasible_sort] 
 % A = []; b = [];
 % Aeq = []; beq = [];
 % nonlcon = [];
-% fun = @(x) myfun(x);
+% fun = @(x) myfun2(x);
 % options.PopulationSize = 100;
 % options.tol = 1e-3;
 % options.SelectionPercent = 0.10;
@@ -145,7 +160,7 @@ for ind = 1:size(xoverKids,1)
     mutantKids(ind,:) = mutantKid;
     % Check feasiblity
     feasibleKids(ind) = isfeasible(mutantKid,A,b,Aeq,beq,lb,ub,nonlcon,tol,1);
-    fvalKids(ind) = myfun(mutantKids(ind,:));
+    fvalKids(ind) = fun(mutantKids(ind,:));
 end
 
 end
