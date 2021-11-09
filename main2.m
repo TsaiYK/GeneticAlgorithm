@@ -3,7 +3,7 @@ clc
 close all
 
 lb = [0.001,0.001,0.05,0.05,3];
-ub = [0.1,0.1,10,10,20];
+ub = [0.1,0.1,10,10,200];
 A = []; b = [];
 Aeq = []; beq = [];
 nonlcon = @(x) nonlconFcn2(x); % nonlinear constraint
