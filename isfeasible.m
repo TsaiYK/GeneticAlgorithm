@@ -1,4 +1,14 @@
 function feasible = isfeasible(x,A,b,Aeq,beq,lb,ub,nonlcon,tol,numPopulation)
+
+% make sure inputs are column vectors
+lb=lb(:); ub=ub(:);
+
+% Combine linear inqualities and bounds
+if ~isempty(ub) || ~isempty(lb)
+    A = [A;eye(size(ub,1));-eye(size(lb,1))];
+    b = [b;ub;-lb];
+end
+
 % initialize feasibility vector
 feasible = true(numPopulation,1);
 % Check feasibility of each site
