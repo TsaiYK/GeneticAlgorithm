@@ -4,7 +4,7 @@ close all
 
 nS = 1e5; % # of sample
 p = 5;
-lb = [0.01,0.01,2,2,3];
+lb = [0.001,0.001,0.05,0.05,3];
 ub = [0.1,0.1,10,10,20];
 delta = ub-lb;
 x_LHS = lhsdesign(nS,p);
