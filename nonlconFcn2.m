@@ -1,4 +1,5 @@
 function [c,ceq] = nonlconFcn2(x)
+x(5) = round(x(5));
 
 % [weight,A_skin,A_stiff] = WeightCal(x);
 [stress_stiff, stress_skin] = StressCal(x);
