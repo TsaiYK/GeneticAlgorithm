@@ -9,10 +9,11 @@ n_stiff = x(5);
 % Parameters
 L = 90;
 w_skin = 60; % width of plate, unit: in
+rho_material = 0.0975; %density of material, lb/in^3
 
 % Area calculation
 A_skin = t_skin*w_skin;
 A_stiff = n_stiff*(w_stiff*h_stiff - (w_stiff-t_stiff)*(h_stiff-t_stiff));
 
 % weight
-weight = (A_skin+A_stiff)*L;
+weight = (A_skin+A_stiff)*L*rho_material;
