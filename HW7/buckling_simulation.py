@@ -52,11 +52,13 @@ session.journalOptions.setValues(replayGeometry=COORDINATE,recoverGeometry=COORD
 ### Calculated Properties/Values ###
 ####################################
 
-filename = 'PostData_HW7.txt'
-### Write data file column headings
-DataFile = open(filename,'w')
-DataFile.write('Buckling\n')
-DataFile.close()
+filename = 'PostData_HW7_buckling_eigenVal.txt'
+filename_time = 'PostData_HW7_time.txt'
+
+# ### Write data file column headings
+# DataFile = open(filename,'w')
+# DataFile.write('Buckling\n')
+# DataFile.close()
 
 ###############################
 ### Generation of FEA Model ###
@@ -462,10 +464,13 @@ for i in range(nS):
     eigenVal = findEigenValue(ModelName,'Step-1')
     print eigenVal
     
-    STAAAAP
-
+    print(eigenVal)
     DataFile = open(filename, 'a')
     DataFile.write('%10f\n' %(eigenVal))
+    DataFile.close()
+    
+    print(elapsedTime)
+    DataFile = open(filename_time, 'w')
     DataFile.write('elapsed time = %4f seconds\n' % elapsedTime)
     DataFile.close()
 
