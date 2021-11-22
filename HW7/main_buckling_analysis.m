@@ -2,12 +2,20 @@ clear
 clc
 close all
 
+%% Define the filename for eigenvalue info
+filename_eigenVal = 'PostData_HW7_buckling_eigenVal.txt';
+% Delete if the previous one exists
+if exist(filename_eigenVal, 'file')==2
+    delete(filename_eigenVal);
+end
+
 %% Define design variables
+% Delete if the previous one exists
 if exist('DesignVariables.txt', 'file')==2
     delete('DesignVariables.txt');
 end
 fileDV = fopen('DesignVariables.txt','w');
-xDesign = [0.1,0.2,5.0,5.0];
+xDesign = [0.1,0.2,5.0,4.0];
 fprintf(fileDV,'%.4f\n',xDesign);
 fclose(fileDV);
 
@@ -20,7 +28,6 @@ disp('Done!')
 toc
 
 %% Read the data
-filename_eigenVal = 'PostData_HW7_buckling_eigenVal.txt';
 fileID = fopen(filename_eigenVal,'r');
 eigenVal = fscanf(fileID,'%f');
 fclose(fileID);
