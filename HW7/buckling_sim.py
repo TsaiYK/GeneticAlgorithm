@@ -66,12 +66,52 @@ filename_time = 'PostData_HW7_time.txt'
 
 ### Note: If you create a loop, START it here 
 ### (i.e., the contents of the loop below are intended)
-# seedSize = [0.25, 0.2, 0.15, 0.1, 0.075]
-sizes = 0.02
-
-# meshTypesArray = ['CPE3','CPE6','CPE4','CPE4I','CPE8','CPE8R']
 tic = time.time()
 
+## Taguchi
+# nS = 18
+# Orth_array_file = 'Orth_array_L18.txt'
+# ### Write data file column headings
+# DataFile = open(Orth_array_file,'r')
+# A = [[0]*nV]*nS
+# contents = []
+# contents = DataFile.read()
+# for i in range(nS):
+    # A_tmp = [0]*nV
+    # for j in range(nV):
+        # A_tmp[j] = int(contents[i*12+j*2])
+    # A[i] = A_tmp
+    # # print(A[i])
+# DataFile.close()
+
+### Design variables
+# t_skin = 0.1
+# t_stiff = 0.2
+# h_stiff = 5
+# w_stiff = 5
+
+nS = 4
+DV_file = 'DesignVariables.txt'
+### Write data file column headings
+# DataFile = open(DV_file,'r')
+# A = [0]*nS
+# contents = []
+# contents = DataFile.read()
+# for i in range(nS):
+    # A[i] = contents[i]
+    # print(A[i])
+
+A = [0]*nS
+i = 0
+file_in = open(DV_file, 'r')
+for y in file_in.read().split('\n'):
+    if i<nS:
+        A[i] = (float(y))
+        i = i+1
+
+
+file_in.close()
+t_skin, t_stiff, h_stiff, w_stiff = A
 
 
 ## Optimal design
@@ -105,9 +145,9 @@ for i in range(nS):
         sheetSize=200.0)
     g, v, d, c = s1.geometry, s1.vertices, s1.dimensions, s1.constraints
     s1.setPrimaryObject(option=STANDALONE)
-    s1.Line(point1=(0.0, 5.0), point2=(0.0, 0.0))
+    s1.Line(point1=(0.0, h_stiff), point2=(0.0, 0.0))
     s1.VerticalConstraint(entity=g[2], addUndoState=False)
-    s1.Line(point1=(0.0, 0.0), point2=(5.0, 0.0))
+    s1.Line(point1=(0.0, 0.0), point2=(w_stiff, 0.0))
     s1.HorizontalConstraint(entity=g[3], addUndoState=False)
     s1.PerpendicularConstraint(entity1=g[2], entity2=g[3], addUndoState=False)
     p = mdb.models['Model-1'].Part(name='Stiff', dimensionality=THREE_D, 
@@ -174,7 +214,7 @@ for i in range(nS):
     p = mdb.models['Model-1'].parts['Skin']
     session.viewports['Viewport: 1'].setValues(displayedObject=p)
     mdb.models['Model-1'].HomogeneousShellSection(name='skin', preIntegrate=OFF, 
-        material='Aluminum', thicknessType=UNIFORM, thickness=0.1, 
+        material='Aluminum', thicknessType=UNIFORM, thickness=t_skin, 
         thicknessField='', nodalThicknessField='', idealization=NO_IDEALIZATION, 
         poissonDefinition=DEFAULT, thicknessModulus=None, temperature=GRADIENT, 
         useDensity=OFF, integrationRule=SIMPSON, numIntPts=5)
@@ -190,7 +230,7 @@ for i in range(nS):
     p = mdb.models['Model-1'].parts['Stiff']
     session.viewports['Viewport: 1'].setValues(displayedObject=p)
     mdb.models['Model-1'].HomogeneousShellSection(name='sitff', preIntegrate=OFF, 
-        material='Aluminum', thicknessType=UNIFORM, thickness=0.2, 
+        material='Aluminum', thicknessType=UNIFORM, thickness=t_stiff, 
         thicknessField='', nodalThicknessField='', idealization=NO_IDEALIZATION, 
         poissonDefinition=DEFAULT, thicknessModulus=None, temperature=GRADIENT, 
         useDensity=OFF, integrationRule=SIMPSON, numIntPts=5)
