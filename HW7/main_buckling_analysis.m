@@ -30,13 +30,14 @@ toc
 %% Read the data
 fileID = fopen(filename_eigenVal,'r');
 eigenVal = fscanf(fileID,'%f');
+final_eigenVal = min(eigenVal);
 fclose(fileID);
 fprintf('Design variables:\n')
 fprintf('t_skin: %.4f in\n',xDesign(1))
 fprintf('t_stiff: %.4f in\n',xDesign(2))
 fprintf('h_stiff: %.4f in\n',xDesign(3))
 fprintf('w_stiff: %.4f in\n',xDesign(4))
-fprintf('Eigenvalue for buckling: %.4f\n',eigenVal)
+fprintf('Eigenvalue for buckling: %.4f\n',final_eigenVal)
 
 
 
