@@ -23,7 +23,7 @@ fclose(fileDV);
 system('cd C:\Users\yktsai0121\Desktop\AERO604_abaqus\HW7_script\ForMatlab');
 disp('Starting FEA analysis in Abaqus...')
 tic
-system('abaqus cae noGUI=buckling_sim_new.py');
+system('abaqus cae noGUI=buckling_sim_new2.py');
 disp('Done!')
 toc
 
