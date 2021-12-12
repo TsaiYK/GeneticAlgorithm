@@ -1,0 +1,7 @@
+Lowest weight: 26.8034
+T_stiff: 0.1000
+H_stiff: 0.7500
+W_stiff: 0.7500
+N_stiff: 3.0000
+N_lam: 15.0000
+Eigenvalue: 4303.5000
