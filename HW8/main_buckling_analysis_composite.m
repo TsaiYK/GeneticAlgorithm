@@ -8,8 +8,9 @@ filename_eigenVal = 'PostData_HW8_buckling_eigenVal.txt';
 if exist(filename_eigenVal, 'file')==2
     delete(filename_eigenVal);
 end
+
 %% Full factorial DOE
-num_level = 2;
+num_level = 3;
 p = 5;
 % [t_stiff,h_stiff,w_stiff,n_stiff,n_lam]
 lb = [0.001,0.75,0.75,3,2];
@@ -43,10 +44,13 @@ nS = size(xDesign,1);
 % Define arrays of zeros for the min eigenvalue and weight for each set
 min_eigenVal = zeros(1,nS);
 design_weight = zeros(1,nS);
+%Define array for buckling
+buckles = zeros(1,nS);
 
 %Loops for each set of DVs and runs Abaqus code, calculates min eigenvalue
 %and weight for each set and populates arrays
 for i = 1:nS
+    disp(i);
     % Delete if the previous one exists
     if exist('DesignVariables.txt', 'file')==2
         delete('DesignVariables.txt');
@@ -62,12 +66,26 @@ for i = 1:nS
     disp('Done!')
     toc
     
+    
     % Read the data
     fileID = fopen(filename_eigenVal,'r');
     eigenVal = fscanf(fileID,'%f');
+    
+    design_weight(i) = WeightCal(xDesign(i,:));
+    
+    w_domain = 60/xDesign(i,4);
+    buckling = min(eigenVal)/w_domain;
+    if buckling <= 40
+        buckles(i) = 1; %yes
+        design_weight(i) = design_weight(i)*1000000;
+        
+    else
+        buckles(i) = 0; %no
+    end
     min_eigenVal(i) = min(eigenVal);
     fclose(fileID);
-    design_weight(i) = WeightCal(xDesign(i,:));
+
+    
 end
 fclose(fileDV);
 
